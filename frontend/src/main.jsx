@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 const sessionId = crypto.randomUUID();
@@ -6,7 +6,12 @@ const sessionId = crypto.randomUUID();
 function App() {
   const [prompt, setPrompt] = useState("Explain RAG in two sentences.");
   const [answer, setAnswer] = useState("");
+  const [status, setStatus] = useState(null);
   const source = useRef(null);
+
+  useEffect(() => {
+    fetch("/api/health").then((r) => r.json()).then(setStatus).catch(() => setStatus({ ok: false }));
+  }, []);
 
   function ask() {
     source.current?.close();
@@ -25,6 +30,11 @@ function App() {
       <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={3} style={{ width: "100%" }} />
       <button onClick={ask}>Ask</button>
       <p style={{ whiteSpace: "pre-wrap" }}>{answer}</p>
+      {status && (
+        <p style={{ color: "#555", fontSize: "0.9rem" }}>
+          Backend: {status.ok ? "connected" : "not reachable"} · Saved to database: {status.db ? "yes" : "no"} · Replies: {status.llm === "live" ? "from the model" : "sample (no API key)"}
+        </p>
+      )}
     </main>
   );
 }

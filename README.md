@@ -1,6 +1,6 @@
-# CSE 642 starter app (tag `S03`)
+# CSE 642 starter app
 
-The Session 3 skeleton for **CSE 642, Agentic AI and Applications** at CSTU. You run it in class, then
+The starter app for **CSE 642, Agentic AI and Applications** at CSTU. You run it in class, then
 grow it across the course into an Agentic RAG app for your own career or service offering.
 
 ```
@@ -17,9 +17,38 @@ The backend keeps three jobs in three files, so you can swap any one without tou
 | Inference | `backend/app/inference.py` | the only code that talks to a model |
 | Storage | `backend/app/storage.py` | saving messages to Postgres |
 
-## Run it
+## Run it with Docker (Build Checkpoint 2 starting point)
 
-Needs Docker, Node 22, [uv](https://docs.astral.sh/uv/), and the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+Needs Docker Desktop (running) and Git. Nothing else to install: Python 3.12, Node 22 and Postgres with pgvector run in containers.
+
+```bash
+git clone --branch CP2-start https://github.com/pingwu/cse642-agentic-app.git
+cd cse642-agentic-app
+git switch -c my-app          # your edits live on your own branch
+docker compose up --build     # the first start takes a few minutes
+```
+
+Open http://localhost:5173 and press **Ask**. The status line under the answer shows whether the backend is connected, whether the message was saved to the database, and whether the reply is from the model or a sample (no key). Without a key the app streams a sample reply, so the pipeline still works.
+
+To use a real model, copy `backend/.env.example` to `backend/.env`, paste your OpenRouter key after `OPENROUTER_API_KEY=`, and run `docker compose up` again. Never commit your key (`.env` is git-ignored) and set a spending limit on your OpenRouter account.
+
+Look at the saved messages:
+
+```bash
+docker compose exec db psql -U postgres -c "select role, left(content, 60) from public.messages order by id;"
+```
+
+| Need | Command |
+|---|---|
+| Stop (keep your data) | `docker compose down` |
+| Start fresh (deletes the database data) | `docker compose down -v` |
+| Port already in use | `FRONTEND_PORT=15173 BACKEND_PORT=18000 docker compose up` (PowerShell: `$env:FRONTEND_PORT=15173; $env:BACKEND_PORT=18000; docker compose up`) |
+
+The database starts empty the first time: it enables pgvector and applies `supabase/migrations`. A new migration file only runs on a new database, so after adding one run `docker compose down -v`. Every port listens on this computer only (127.0.0.1).
+
+## Run it without Docker (tag `S03`, Session 3)
+
+Session 3 uses the frozen `S03` tag and runs on your computer directly. It needs Docker, Node 22, [uv](https://docs.astral.sh/uv/), and the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
 
 ```bash
 git clone https://github.com/pingwu/cse642-agentic-app.git
@@ -43,10 +72,7 @@ cd frontend             # in a second terminal
 npm install && npm run dev
 ```
 
-Open http://127.0.0.1:5173 and press **Ask**. The answer should appear a few words at a time
-(Server-Sent Events). With no key the app streams a canned reply, so the pipeline still works.
-Each message is saved to the `messages` table; look at it in Studio at http://127.0.0.1:54323.
-Never commit your key: `.env` is git-ignored. Set a spending limit on your OpenRouter account.
+Open http://127.0.0.1:5173 and press **Ask**. The answer should appear a few words at a time (Server-Sent Events). Each message is saved to the `messages` table; look at it in Studio at http://127.0.0.1:54323.
 
 ## Two ways to build what this course teaches
 

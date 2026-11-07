@@ -10,6 +10,11 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL = os.getenv("MODEL", "openai/gpt-4o-mini")
 
 
+def llm_mode() -> str:
+    """"live" when a key is set, "sample" for the canned reply."""
+    return "live" if os.getenv("OPENROUTER_API_KEY") else "sample"
+
+
 async def stream_answer(messages: list[dict]) -> AsyncIterator[str]:
     """Yield the model's answer a few words at a time."""
     key = os.getenv("OPENROUTER_API_KEY")

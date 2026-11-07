@@ -7,14 +7,14 @@ from fastapi import FastAPI  # noqa: E402
 from sse_starlette.sse import EventSourceResponse  # noqa: E402
 
 from . import state, storage  # noqa: E402
-from .inference import stream_answer  # noqa: E402
+from .inference import llm_mode, stream_answer  # noqa: E402
 
 app = FastAPI(title="CSE 642 skeleton")
 
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"ok": True}
+    return {"ok": True, "db": storage.db_ok(), "llm": llm_mode()}
 
 
 @app.get("/api/chat")

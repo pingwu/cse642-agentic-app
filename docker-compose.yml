@@ -1,0 +1,68 @@
+# CSE 642 starter app, all in Docker.
+#
+#   docker compose up --build      start everything (first start takes a few minutes)
+#   docker compose down            stop and remove the containers (your data stays)
+#   docker compose down -v         also delete the database data and start fresh
+#
+# Open http://localhost:5173. Every port listens on this computer only (127.0.0.1).
+# Port already in use?  FRONTEND_PORT=15173 BACKEND_PORT=18000 docker compose up
+# (Windows PowerShell:  $env:FRONTEND_PORT=15173; $env:BACKEND_PORT=18000; docker compose up)
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # local development only; the port is bound to 127.0.0.1
+      POSTGRES_DB: postgres
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Runs once, when the data volume is first created: enable pgvector, then apply supabase/migrations.
+      - ./docker/db-init:/docker-entrypoint-initdb.d:ro
+      - ./supabase/migrations:/migrations:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build: ./backend
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+    env_file:
+      - path: backend/.env
+        required: false # OPENROUTER_API_KEY goes here; without it the app streams a sample reply
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
+      WATCHFILES_FORCE_POLLING: "true" # makes code edits show up on Windows
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-5173}:5173"
+    environment:
+      API_URL: http://backend:8000
+      CHOKIDAR_USEPOLLING: "true" # makes code edits show up on Windows
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  db_data:
+  frontend_node_modules:
