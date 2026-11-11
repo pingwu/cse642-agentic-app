@@ -1,0 +1,26 @@
+# One command brings up the web app: `docker compose up --build`, then open http://localhost:5173
+# Two containers: backend (FastAPI, :8000) and frontend (Vite, :5173).
+# Your edits in frontend/src and backend/app are mounted in, so the browser updates as you save.
+# The database is separate: run `supabase start` when a session needs it. The chat works without it.
+services:
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@host.docker.internal:54322/postgres
+    volumes:
+      - ./backend/app:/srv/app
+
+  frontend:
+    build: ./frontend
+    ports: ["5173:5173"]
+    environment:
+      API_TARGET: http://backend:8000
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./frontend/src:/srv/src
+      - ./frontend/index.html:/srv/index.html
+    depends_on: [backend]

@@ -1,4 +1,4 @@
-# CSE 642 starter app (tag `S03`)
+# CSE 642 starter app (tag `CP2-start`)
 
 The Session 3 skeleton for **CSE 642, Agentic AI and Applications** at CSTU. You run it in class, then
 grow it across the course into an Agentic RAG app for your own career or service offering.
@@ -17,7 +17,23 @@ The backend keeps three jobs in three files, so you can swap any one without tou
 | Inference | `backend/app/inference.py` | the only code that talks to a model |
 | Storage | `backend/app/storage.py` | saving messages to Postgres |
 
-## Run it
+## Quick start with Docker Desktop (tag `CP2-start`)
+
+Install and open [Docker Desktop](https://www.docker.com/products/docker-desktop/), then:
+
+```bash
+git clone https://github.com/pingwu/cse642-agentic-app.git
+cd cse642-agentic-app
+git checkout CP2-start
+docker compose up --build
+```
+
+Open http://localhost:5173 for your landing page and http://localhost:5173/ask for the chat. In Docker
+Desktop, **Containers** shows the two services (`backend`, `frontend`). Edit `frontend/src/content.js`
+and the page updates as you save. Stop with `Ctrl+C` or the stop button in Docker Desktop. The chat
+works without a key (canned reply) and without the database; run `supabase start` when a session needs it.
+
+## Run it without Docker (tag `S03` steps)
 
 Needs Docker, Node 22, [uv](https://docs.astral.sh/uv/), and the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
 
