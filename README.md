@@ -28,7 +28,7 @@ git switch -c my-app          # your edits live on your own branch
 docker compose up --build     # the first start takes a few minutes
 ```
 
-Open http://localhost:5173 and press **Ask**. The status line under the answer shows whether the backend is connected, whether the message was saved to the database, and whether the reply is from the model or a sample (no key). Without a key the app streams a sample reply, so the pipeline still works.
+Open http://localhost:5173 for your landing page (edit `frontend/src/content.js` and it updates as you save). The chat is at http://localhost:5173/ask: press **Ask**. The status line under the answer shows whether the backend is connected, whether the message was saved to the database, and whether the reply is from the model or a sample (no key). Without a key the app streams a sample reply, so the pipeline still works.
 
 To use a real model, copy `backend/.env.example` to `backend/.env`, paste your OpenRouter key after `OPENROUTER_API_KEY=`, and run `docker compose up` again. Never commit your key (`.env` is git-ignored) and set a spending limit on your OpenRouter account.
 
