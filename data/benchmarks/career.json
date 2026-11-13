@@ -1,0 +1,30 @@
+{
+  "track": "career",
+  "note": "Fictional sample benchmarks for a course exercise. Not real labour-market data.",
+  "entries": [
+    {
+      "id": "career-data-engineer",
+      "keywords": ["data engineer", "etl", "pipeline", "sql", "python", "demand", "outlook"],
+      "answer": "Demand for junior data engineers is steady. About 4,200 openings are listed per quarter in the sample region, up 6 percent on last year. Median pay is 88,000 dollars.",
+      "source": "Sample Regional Jobs Survey, 2026 (fictional)"
+    },
+    {
+      "id": "career-ml-engineer",
+      "keywords": ["machine learning", "ml engineer", "model", "ai engineer", "demand", "outlook"],
+      "answer": "Openings for machine learning engineers grew 14 percent, but most ask for three or more years of experience. Entry-level openings are about a fifth of the total.",
+      "source": "Sample Regional Jobs Survey, 2026 (fictional)"
+    },
+    {
+      "id": "career-analytics",
+      "keywords": ["data analyst", "analytics", "dashboard", "bi", "reporting", "demand", "outlook"],
+      "answer": "Data analyst openings are flat. Employers increasingly ask for SQL plus basic Python, not spreadsheets alone.",
+      "source": "Sample Regional Jobs Survey, 2026 (fictional)"
+    },
+    {
+      "id": "career-prompt-engineer",
+      "keywords": ["ai product", "product builder", "language model", "llm", "agent", "retrieval"],
+      "answer": "Roles that build language-model features are new and labelled inconsistently. Postings that mention retrieval, evaluation or agents rose 31 percent, and most accept a strong public project in place of a degree.",
+      "source": "Sample Emerging Roles Brief, 2026 (fictional)"
+    }
+  ]
+}

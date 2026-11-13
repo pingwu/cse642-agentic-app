@@ -1,0 +1,30 @@
+{
+  "track": "startup",
+  "note": "Fictional sample benchmarks for a course exercise. Not real market data.",
+  "entries": [
+    {
+      "id": "startup-support-inbox",
+      "keywords": ["support", "help desk", "shared inbox", "small team", "demand", "market"],
+      "answer": "About 340,000 teams of two to fifteen people use a shared inbox or help desk, growing 11 percent a year. Typical price is 19 to 39 dollars per user per month.",
+      "source": "Sample Small-Team Tools Report, 2026 (fictional)"
+    },
+    {
+      "id": "startup-meeting-tracker",
+      "keywords": ["meeting", "open items", "action items", "digest", "tracker", "demand", "market"],
+      "answer": "Open-item trackers are crowded at the low end: free tiers cover teams of five, and paid plans sit at 8 to 15 dollars per user. Differentiation comes from reading notes automatically, not from the tracker itself.",
+      "source": "Sample Small-Team Tools Report, 2026 (fictional)"
+    },
+    {
+      "id": "startup-search-by-meaning",
+      "keywords": ["search", "semantic", "meaning", "retrieval", "past answers", "knowledge base"],
+      "answer": "In a survey of 120 small teams, 58 percent said they re-answer questions because they cannot find an earlier reply. 34 percent said they would pay extra for search by meaning.",
+      "source": "Sample Small-Team Tools Report, 2026 (fictional)"
+    },
+    {
+      "id": "startup-pricing",
+      "keywords": ["pricing", "price", "per user", "flat", "plan", "willingness to pay"],
+      "answer": "Owners of teams under 15 resist per-user price jumps. Flat pricing up to 15 users tested 22 percent better on trial-to-paid conversion than per-user tiers.",
+      "source": "Sample Pricing Experiments Digest, 2026 (fictional)"
+    }
+  ]
+}
